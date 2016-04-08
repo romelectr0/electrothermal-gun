@@ -1,5 +1,11 @@
 #include <Servo.h>
-int number[][10] = {{2,4,5,6,7,8},{5,6},{2,5,3,7,4},{2,5,3,6,4},{8,3,5,6},{2,8,3,6,4},{2,8,3,7,6,4},{2,5,6},{2,2,4,5,6,7,8},{2,3,5,8,6,4}}; 
+int a  = 2;
+int b = 5;
+int c  = 6;
+int d  = 4;
+int e = 7;
+int f = 8;
+int g = 3;
 int mesureinput = A3;
 int dizaine = A1;
 int unite = A2;
@@ -17,6 +23,7 @@ int voltagemesurate;
 int resistor1;
 int resistor2;
 void setup() {
+    delay(1000);
   // put your setup code here, to run once:
   for(int i = 0;i<12;i++) {
     if(i<9) {
@@ -31,7 +38,7 @@ void setup() {
  }
 void loop() {
   voltagemesurate = ((analogRead(mesureinput)*5)/1024)/(resistor2/(resistor1+resistor2));
-  displaynumber(voltagemesurate/10,40,80);
+  displaynumber(voltagemesurate/10,5,10);
   if (digitalRead(mod) == HIGH) {
     semiauto = !semiauto;
   }
@@ -44,7 +51,7 @@ void loop() {
       break;
    }
     voltagemesurate = ((analogRead(mesureinput)*5)/1024)/(resistor2/(resistor1+resistor2));
-    displaynumber(voltagemesurate/10,40,80);
+    displaynumber(voltagemesurate/10,5,10);
   }
  }
   if (digitalRead(shoot) == HIGH && loaded == true) {
@@ -53,40 +60,130 @@ void loop() {
   // put your main code here, to run repeatedly:
 
 }
-void displaynumber(int value,int timenumber,int timedisplay) {
-  int dizainedisplay = (value-(value%10))/10;
-  int unitedisplay = value%10;
-  int actualtime = millis();
-  while(true) {
-  digitalWrite(dizaine,HIGH);
-  for(int y  = 0;y < timenumber;y++) {
-  for(int i = 0;i < sizeof(number[dizainedisplay]);i++) {
-    digitalWrite(number[dizainedisplay][i],HIGH);
-  }
-  delay(1);
-  }
-  offnumber();
-  digitalWrite(dizaine,LOW);
-  digitalWrite(unite,HIGH);
-  for(int y = 0;y < timenumber;y++) {
-  for(int i = 0;i < sizeof(number[unite]);i++) {
-    digitalWrite(number[unite][i],HIGH);
-  }
-  delay(1);
-  }
-  offnumber();
-  digitalWrite(unite,LOW);  
-  if (actualtime == timedisplay) {
-    offnumber();
-    digitalWrite(unite,LOW);
-    digitalWrite(dizaine,LOW);
-    break;
-  }
- }
-}
 
 void offnumber() {
-  for(int i = 0;i<7;i++) {
-    digitalWrite(i+2,LOW);
+  digitalWrite(a,LOW);
+  digitalWrite(b,LOW);
+  digitalWrite(c,LOW);
+  digitalWrite(d,LOW);
+  digitalWrite(e,LOW);
+  digitalWrite(f,LOW);
+  digitalWrite(g,LOW);
+}
+void zero() {
+  digitalWrite(a,HIGH);
+  digitalWrite(b,HIGH);
+  digitalWrite(c,HIGH);
+  digitalWrite(d,HIGH);
+  digitalWrite(e,HIGH);
+  digitalWrite(f,HIGH);
+}
+void un() {
+ digitalWrite(b,HIGH);
+ digitalWrite(c,HIGH); 
+}
+void deux() {
+  digitalWrite(a,HIGH);
+  digitalWrite(b,HIGH);
+  digitalWrite(g,HIGH);
+  digitalWrite(e,HIGH);
+  digitalWrite(d,HIGH);
+}
+void trois() {
+  digitalWrite(a,HIGH);
+  digitalWrite(b,HIGH);
+  digitalWrite(g,HIGH);
+  digitalWrite(c,HIGH);
+  digitalWrite(d,HIGH);
+}
+void quatre() {
+  digitalWrite(f,HIGH);
+  digitalWrite(g,HIGH);
+  digitalWrite(b,HIGH);
+  digitalWrite(c,HIGH);
+}
+void cinq() {
+  digitalWrite(a,HIGH);
+  digitalWrite(f,HIGH);
+  digitalWrite(g,HIGH);
+  digitalWrite(c,HIGH);
+  digitalWrite(d,HIGH);
+}
+void six() {
+  digitalWrite(a,HIGH);
+  digitalWrite(f,HIGH);
+  digitalWrite(e,HIGH);
+  digitalWrite(g,HIGH);
+  digitalWrite(c,HIGH);
+  digitalWrite(d,HIGH);
+}
+void sept() {
+  digitalWrite(a,HIGH);
+  digitalWrite(b,HIGH);
+  digitalWrite(c,HIGH);
+}
+void huit() {
+  digitalWrite(a,HIGH);
+  digitalWrite(b,HIGH);
+  digitalWrite(c,HIGH);
+  digitalWrite(d,HIGH);
+  digitalWrite(e,HIGH);
+  digitalWrite(f,HIGH);
+  digitalWrite(g,HIGH);
+}
+void neuf() {
+  digitalWrite(a,HIGH);
+  digitalWrite(b,HIGH);
+  digitalWrite(c,HIGH);
+  digitalWrite(d,HIGH);
+  digitalWrite(f,HIGH);
+  digitalWrite(g,HIGH);
+}
+void displaydigit(int number) {
+  if (number == 0) {
+    zero();
+  }
+  if (number == 1) {
+    un();
+  }
+  if (number == 2) {
+    deux();
+  }
+  if (number == 3) {
+    trois();
+  }
+  if (number == 4) {
+    quatre();
+  }
+  if (number == 5) {
+    cinq();
+  }
+  if (number == 6) {
+    six();
+  }
+  if (number == 7) {
+    sept();
+  }
+  if (number == 8) {
+    huit();
+  }
+  if (number == 9) {
+    neuf();
   }
 }
+void displaynumber(int value,int timenumber,int turnnumber) {
+  int dizainedisplay = (value-(value%10))/10;
+  int unitedisplay = value%10;
+  for(int i = 0;i < 20;i++) {
+  digitalWrite(unite,HIGH);
+  displaydigit(unitedisplay);
+  delay(timenumber);
+  offnumber();
+  digitalWrite(unite,LOW);
+  digitalWrite(dizaine,HIGH);
+  displaydigit(dizainedisplay);
+  delay(timenumber);
+  offnumber();
+  digitalWrite(dizaine,LOW);
+  }
+  }
